@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 마이바티스 3 Mapper DTD -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="dao.DeptDao">
+
+	<!-- id - DAO의 메소드 이름  오버로딩 불가능 -->
+	<!-- parameterType : 매개변수 타입 -->
+	<!-- resultType : 리턴 타입 -->
+	<!-- #{} :  파라미터가 들어갈 곳, 변수 이름 같게 -->
+	<select id="selectByDeptno"  parameterType="int" resultType="dto.Dept">
+		SELECT * FROM dept
+		WHERE deptno = #{deptno}
+	</select>
+	
+	<select id="selectAll" resultType="dto.Dept">
+		SELECT * FROM dept
+		ORDER BY deptno
+	</select>
+	
+	<!-- string은 참조형이지만 getter를 호출하지 않고 string을 대입해줌..? 그래서 에러는 안나지만 잘못된 것이다 -->
+	<!-- 스트링은 특수하게 처리된다, 처리값에 value라고 넣어주어야 한다 -->
+	<select id="selectByDname" parameterType="string" resultType="dto.Dept">
+		SELECT * FROM dept
+		WHERE dname = #{value}
+	</select>
+	
+	<!-- 파라미터가 참조형변수일 경우에는 멤버필드의 getter를 호출한다 -->
+	<select id="selectByDept" parameterType="dto.Dept" resultType="dto.Dept">
+		SELECT * FROM dept
+		WHERE dname = #{dname}
+	</select>
+	
+	<insert id="insert" parameterType="dto.Dept">
+		INSERT INTO dept( deptno, dname, loc )
+		VALUES(#{deptno}, #{dname}, #{loc})
+	</insert>
+
+</mapper>
