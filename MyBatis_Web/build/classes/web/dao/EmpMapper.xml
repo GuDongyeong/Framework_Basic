@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 마이바티스 3 Mapper DTD -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="web.dao.EmpDao">
+  
+  	<!-- resultset에 담긴 데이터를 resultType으로 맞추어 처리.. 그러나 컬럼명이 변수명과 다를 경우 resultMap으로 처리 -->
+  	<!-- type: Emp 를 이용하여 새로운 resultMap을 만든다 -->
+  	<resultMap type="web.dto.Emp" id="Emp">
+<!--   		<result column="user_name" property="userName"/> -->
+  		<!-- 기본키는 id에, 첫번째로 와야함 -->
+  		<id column="empno" property="empno"/>
+  		<!-- 다른 컬럼 -->
+  		<result column="ename" property="ename"/>
+  		<result column="job" property="job"/>
+  		<result column="mgr" property="mgr"/>
+  		<result column="hiredate" property="hiredate"/>
+  		<result column="sal" property="sal"/>
+  		<result column="comm" property="comm"/>
+  		<result column="deptno" property="deptno"/>
+  	</resultMap>
+  
+  	<!-- 중복된 코드를 재사용할 수 있도록 하는 태그 -->
+  	<sql id="selectEmp">
+		SELECT * FROM emp
+  	</sql>
+  
+  	<sql id="whereCond">
+  		WHERE empno = #{empno}
+  	</sql>
+  
+<!--   	<select id="selectCountAll"> -->
+<!--   		SELECT count(*) FROM ( -->
+<!--   			<include refid="selectEmp"></include> -->
+<!--   		) -->
+<!--   	</select> -->
+  
+<!-- 	<select id="selectAll" resultType="web.dto.Emp"> -->
+	<select id="selectAll" resultMap="Emp">
+		<!-- sql 쿼리문을 가져온다 -->
+		<include refid="selectEmp"></include>
+		ORDER BY empno	
+	</select>
+	
+	<select id="selectByEmpno" parameterType="int" resultType="web.dto.Emp">
+		<include refid="selectEmp"></include>
+		<include refid="whereCond"></include>
+	</select>
+  
+  </mapper>

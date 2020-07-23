@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 마이바티스 3 Mapper DTD -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- namespace 쿼리를 모아놓는 곳/ 인터페이스와 연결되어서 자바와 마이바티스를 연결 -->
+<mapper namespace='dept.dao.DeptDao'>
+	
+	<select id="selectAll" resultType="Dept">
+		SELECT * FROM dept
+		ORDER BY deptno
+	</select>
+	
+	<select id="selectDept" parameterType="Dept" resultType="Dept">
+		SELECT * FROM dept
+		WHERE deptno = #{deptno}	
+	</select>
+	
+	<insert id="insertDept" parameterType="Dept">
+		INSERT INTO dept(deptno, dname, loc)
+		VALUES( #{deptno}, #{dname}, #{loc})
+	</insert>
+
+</mapper>

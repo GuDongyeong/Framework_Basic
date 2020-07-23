@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 마이바티스 3 Mapper DTD -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="selectKey.dao.SelectKeyDao">
+
+	<insert id="insert" parameterType="selectKey.dto.Member">
+	
+		<!-- order : INSERT 쿼리를 실행 전/후에 selectKey 쿼리를 실행하겠다 -->
+		<!-- resultType : resultSet으로 결과값이 나올 것, 이를 resultType으로 바꿔준다-->
+		<!-- keyProperty : insert에 파라미터타입으로 명시된 객체를 써놓으면 조회된 결과를 객체의 멤버필드에 담아준다 -->
+<!-- 		<selectKey order="BEFORE" resultType="int" keyProperty="no"> -->
+<!-- 			SELECT test_member_seq.nextval FROM dual -->
+<!-- 		</selectKey> -->
+	
+<!-- 		INSERT INTO test_member(no, id, pw) -->
+<!-- 		VALUES(#{no}, #{id}, #{pw}) -->
+		
+		INSERT INTO test_member(no, id, pw)
+		VALUES(test_member_seq.nextval, #{id}, #{pw})
+		
+		<selectKey order="AFTER" resultType="int" keyProperty="no">
+		<!-- 두 개다 완전 안전하지는 않음 -->
+<!-- 			SELECT test_member_seq.currval FROM dual -->
+			SELECT max(no) FROM text_member
+		</selectKey>
+		
+	</insert>
+
+</mapper>

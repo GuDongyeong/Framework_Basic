@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 마이바티스 3 Mapper DTD -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="dynamic.dao.DynamicQueryDao">
+	
+	<!-- resultType으로 hashmap을 쓰면 마이바티스가 한 행의 데이터를 map으로 묶어서 list로 반환한다 -->
+	<select id="select" resultType="hashmap">
+		SELECT * FROM test_member
+		
+		<if test="false">
+		ORDER BY no
+		</if>
+
+	</select>
+	
+	<select id="select2" parameterType="string" resultType="EmpDTO">
+		SELECT * FROM emp
+		
+		<!-- test안에 잘못된 구문을 넣으면 기본값 true가 들어감 -->
+		<!-- #{ename} ps.getString으로 가져옴 ''가 붙기 때문에 '%' || ? || '%'이렇게 처리해줘야함  -->
+		<if test='value != null and !value.equals("")'>
+			WHERE ename LIKE '%' || #{value} || '%'
+		</if>
+	
+	</select>
+	
+	<select id="select3" parameterType="EmpDTO" resultType="EmpDTO">
+		SELECT * FROM emp
+		WHERE 1=1
+		
+		
+		<if test='empno != null'>
+			AND empno = #{empno}
+		</if>	
+		<if test='ename != null and !ename.equals("")'>
+			OR ename LIKE '%' || #{ename} || '%'
+		</if>
+	
+	</select>
+	
+	<select id="select4" resultType="EmpDTO" parameterType="hashmap">
+		SELECT * FROM emp
+		
+		<!-- prefix : 접두어, 무조건 앞에 붙음  -->
+		<!-- suffix : 접미어  -->
+		<!-- overrides : 만나면 지워져야할 글자 -->
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<choose>
+				<when test="category.equals('ename')">
+					AND ename = #{keyword} 
+				</when>	
+				<when test="category.equals('job')">
+					AND job = #{keyword}
+				</when>	
+			</choose>
+		</trim>
+	</select>
+	
+	<!-- trim 태그 사용 예시 1 -->
+<!-- 	<select id="select4"> -->
+<!-- 		SELECT * FROM emp -->
+<!-- 		WHERE deptno = 10 -->
+			
+<!-- 		<trim prefix="AND (" prefixOverrides="OR" suffix=")"> -->
+		
+<!-- 		<if test="job != null"> -->
+<!-- 		OR job LIKE '%' || #{job} || '%' -->
+<!-- 		</if> -->
+<!-- 		<if test="sal != null"> -->
+<!-- 		OR sal > #{sal} -->
+<!-- 		</if> -->
+		
+<!-- 		</trim> -->
+<!-- 	</select> -->
+
+	<!-- trim 태그 사용 예시 2 -->
+<!-- 	<update id="update"> -->
+<!-- 		UPDATE emp -->
+		<!-- 사실 trim에서 중요한 것은 overrides 때문! 없어져야 할 구문을 없애기 위해 사용 --> 
+<!-- 		<trim prefix="SET" suffixOverrides=","> -->
+<!-- 			<if test="ename != null"> -->
+<!-- 			ename = #{ename}, -->
+<!-- 			</if> -->
+<!-- 			<if test="job != null"> -->
+<!-- 			job = #{job}, -->
+<!-- 			</if> -->
+<!-- 			<if test="deptno != null"> -->
+<!-- 			deptno = #{deptno}, -->
+<!-- 			</if> -->
+<!-- 		</trim>	 -->
+	
+	<!-- where : 앞에 where 붙여줌 == WHERE empno = #{empno} -->	
+<!-- 		<where> -->
+<!-- 		empno = #{empno} -->
+<!-- 		</where> -->
+<!-- 	</update> -->
+
+	<select id="selectCheckbox" parameterType="hashmap" resultType="EmpDTO">
+		
+		SELECT * FROM emp
+
+		<if test="deptnoArr != null">
+		WHERE deptno IN
+		<!-- collection: 반복할 수 있는 요소 hashMap 안의 키 이름 -->
+		<foreach collection="deptnoArr" item="deptno" open="(" close=")" separator=",">
+			#{deptno}
+		</foreach>
+		</if>
+	</select>
+
+</mapper>
