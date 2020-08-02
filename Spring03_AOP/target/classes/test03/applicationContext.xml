@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- 이 태그를 사용하면 proxy 생성을 위한 Bean이 없어도 된다 -->
+	<!-- AutoProxyCreator bean 과 PointCutAdvisor bean을 등록하지 않고도 aop를 가능하게 해주는 태그 -->
+	<aop:aspectj-autoproxy />
+
+
+	<!-- Target : 핵심기능 모듈 -->
+	<bean id="man" class="test03.Man" />
+	<bean id="woman" class="test03.Woman" />
+	
+	<!-- Advice : 부기능 모듈 -->
+	<bean id="myAdvice" class="test03.MyAdvice" />
+	
+	<!-- 지정한 advice가 적용될 시점을 알려준다 -->
+	<aop:config>
+		<aop:aspect ref="myAdvice">
+			<!-- execution :	Advice를 적용할 메서드를 명시할 때 사용합니다. -->
+
+			<!-- 타겟 객체 호출 전 myAdvice의 before를 추가 -->
+			<aop:before method="before" pointcut="execution(public * *(..))"/>	
+			
+			<!-- 타겟 객체 호출 후 myAdvice의 after를 추가 -->				
+			<aop:after method="after" pointcut="execution(public * *(..))" />
+		</aop:aspect>
+	</aop:config>
+	
+</beans>
