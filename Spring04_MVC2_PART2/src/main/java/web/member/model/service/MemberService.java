@@ -2,8 +2,6 @@ package web.member.model.service;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Service;
 
 import web.member.model.vo.Member;
@@ -17,7 +15,7 @@ public interface MemberService {
 	
 	public Member selectMember(Map<String, Object> map);
 
-	public int updateMember(Member m, HttpSession session);
+	public int updateMember(Member m);
 
 	public int leaveMember(String userId);
 	

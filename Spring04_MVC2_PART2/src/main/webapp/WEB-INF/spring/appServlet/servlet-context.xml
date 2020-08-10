@@ -65,12 +65,4 @@
 	
 	<beans:bean name="logAop" class="common.aop.LogAop" />
 	
-	<!-- 인터셉터 등록 -->
-	<interceptors>
-		<interceptor>
-			<!-- 모든 요청이 인터셉터를 거치도록 작성 -->
-			<mapping path="/**"/>
-			<beans:bean class="common.interceptor.AuthInterceptor"></beans:bean>
-		</interceptor>
-	</interceptors>
 </beans:beans>

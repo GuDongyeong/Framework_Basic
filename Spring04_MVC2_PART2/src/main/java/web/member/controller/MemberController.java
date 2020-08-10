@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -165,7 +164,7 @@ public class MemberController {
 		// jsp 에서 받아온 파라미터에 세션에 저장된 id 값 저장해주기 - 사용자가 조작할 수 없는 session에서 가져오는 것이 보안상 문제가 없다
 		m.setUserId(sessionMember.getUserId());
 		
-		int res = memberService.updateMember(m, session);
+		int res = memberService.updateMember(m);
 		
 		if(res > 0) {
 			// 회원 수정에 성공한 경우
@@ -271,18 +270,6 @@ public class MemberController {
 		return mav;
 	}
 	
-	// 예외처리를 일괄적으로 할 수 있게 도와주는 annotation
-	// Controller에서만 사용이 가능하다
-	@ExceptionHandler(Exception.class)
-	public ModelAndView ex(Exception e) {
-		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("alertMsg", "에러가 발생했습니다.");
-		mav.addObject("url", "login.do");
-		mav.setViewName("common/result");
-		
-		return mav;
-	}
 	
 
 }
