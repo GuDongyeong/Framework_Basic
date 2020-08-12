@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import common.exception.FileException;
 import web.board.model.service.NoticeService;
 import web.board.model.vo.Notice;
 import web.member.model.vo.Member;
@@ -36,7 +37,7 @@ public class NoticeController {
 	
 	
 	@RequestMapping(value="/notice/noticeupload.do", method=RequestMethod.POST)
-	public ModelAndView noticeUpload(@RequestParam List<MultipartFile> files, HttpSession session, Notice notice ) {
+	public ModelAndView noticeUpload(@RequestParam List<MultipartFile> files, HttpSession session, Notice notice ) throws FileException {
 		// 다중파일 업로드이므로 여러 개의 MultipartFile 을 담기 위한 List 파라미터로 요청 받기
 		
 		
@@ -69,7 +70,7 @@ public class NoticeController {
 		
 		// -> Service 단으로 이동
 		
-//		System.out.println(notice);
+		System.out.println(notice);
 
 		ModelAndView mav = new ModelAndView();
 		
@@ -216,7 +217,7 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value="notice/noticeModify.do", method=RequestMethod.POST)
-	public ModelAndView noticeModify(String userId, Notice notice, List<MultipartFile> files, HttpSession session) {
+	public ModelAndView noticeModify(String userId, Notice notice, List<MultipartFile> files, HttpSession session) throws FileException {
 		
 		ModelAndView mav = new ModelAndView();
 		

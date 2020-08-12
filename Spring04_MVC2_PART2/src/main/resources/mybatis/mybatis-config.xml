@@ -14,9 +14,6 @@
   		<typeAlias type="web.board.model.vo.Notice" alias="NOTICE"/>
   	</typeAliases>
   	
-  	<mappers>
-  		<mapper resource="/mybatis/mapper/memberMapper.xml"/>
-  		<mapper resource="/mybatis/mapper/noticeMapper.xml"/>
-  	</mappers>
+
   
   </configuration>

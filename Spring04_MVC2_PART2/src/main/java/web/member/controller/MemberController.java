@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import common.exception.MailException;
 import web.member.model.service.MemberService;
 import web.member.model.vo.Member;
 
@@ -164,7 +166,7 @@ public class MemberController {
 		// jsp 에서 받아온 파라미터에 세션에 저장된 id 값 저장해주기 - 사용자가 조작할 수 없는 session에서 가져오는 것이 보안상 문제가 없다
 		m.setUserId(sessionMember.getUserId());
 		
-		int res = memberService.updateMember(m);
+		int res = memberService.updateMember(m, session);
 		
 		if(res > 0) {
 			// 회원 수정에 성공한 경우
@@ -254,7 +256,7 @@ public class MemberController {
 	
 	// 회원가입 이메일 인증
 	@RequestMapping("/joinemailcheck.do")
-	public ModelAndView joinEmailCheck(@ModelAttribute Member member, HttpServletRequest req) {
+	public ModelAndView joinEmailCheck(@ModelAttribute Member member, HttpServletRequest req) throws MailException {
 		
 		// View 지정 객체
 		ModelAndView mav = new ModelAndView();
@@ -269,6 +271,7 @@ public class MemberController {
 		
 		return mav;
 	}
+	
 	
 	
 

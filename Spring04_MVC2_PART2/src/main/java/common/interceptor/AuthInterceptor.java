@@ -16,7 +16,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		
 		// 사용자가 요청한 URI에 notice가 포함되어 있고 session정보에 logInInfo가 저장되어있지 않다면(로그인을 하지 않았다면)
-		if(request.getRequestURI().contains("notice/") && request.getSession().getAttribute("IogInInfo") == null ) {
+		if(request.getRequestURI().contains("notice/") && request.getSession().getAttribute("logInInfo") == null ) {
 			
 			request.setAttribute("alertMsg", "비회원은 접근할 권한이 없습니다.");
 			request.setAttribute("url", request.getContextPath() + "/member/login.do");

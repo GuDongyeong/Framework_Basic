@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import common.exception.FileException;
 import common.util.FileUtil;
 import common.util.Paging;
 import web.board.model.dao.NoticeDao;
@@ -21,14 +22,14 @@ public class NoticeServiceImpl implements NoticeService{
 	private NoticeDao noticeDao;
 	
 //	@Transactional
-	public int insertNotice(Notice notice, List<MultipartFile> files, String root) {
+	public int insertNotice(Notice notice, List<MultipartFile> files, String root) throws FileException {
 		
 		int result = noticeDao.insertNotice(notice);
 		
 		// 에러 발생을 위한 코드
-		int errorNumber = 10/0;
+//		int errorNumber = 10/0;
 		
-		if( files.size() != 1 && !files.get(0).getOriginalFilename().equals("")) {
+		if( !(files.size() == 1 && files.get(0).getOriginalFilename().equals(""))) {
 			
 			// 파일 업로드를 위해 FileUtil.fileUpload() 호출
 			List<Map<String, Object>> fileData = new FileUtil().fileUpload(files, root);
@@ -90,7 +91,7 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	// 게시글 수정
-	public int modifyNotice(Notice notice, List<MultipartFile> files, String root) {
+	public int modifyNotice(Notice notice, List<MultipartFile> files, String root) throws FileException {
 		
 		int result = noticeDao.updateNotice(notice);
 		

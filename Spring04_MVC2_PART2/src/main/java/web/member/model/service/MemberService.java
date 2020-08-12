@@ -2,8 +2,11 @@ package web.member.model.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 
+import common.exception.MailException;
 import web.member.model.vo.Member;
 
 // @Controller나 @Repository와 달리 bean으로 등록시켜주는 기능 외에는 별다른 기능이 없다.
@@ -15,13 +18,13 @@ public interface MemberService {
 	
 	public Member selectMember(Map<String, Object> map);
 
-	public int updateMember(Member m);
+	public int updateMember(Member m, HttpSession session);
 
 	public int leaveMember(String userId);
 	
 	public int selectId(String userId);
 	
-	public void mailSending(Member member, String urlPath);
+	public void mailSending(Member member, String urlPath) throws MailException;
 
 	public void leaveMailSending(Member member, String urlPath);
 

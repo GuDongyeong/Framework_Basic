@@ -11,10 +11,12 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import common.exception.FileException;
+
 public class FileUtil {
 	// 파일 업로드
 	
-	public List<Map<String, Object>> fileUpload(List<MultipartFile> files, String root){
+	public List<Map<String, Object>> fileUpload(List<MultipartFile> files, String root) throws FileException{
 		
 		// 파일과 관련된 정보를 가지고 반환될 List
 		List<Map<String, Object>> fileData = new ArrayList<>();
@@ -65,16 +67,20 @@ public class FileUtil {
 		return renameFileName;
 	}
 	
-	public void saveFile(MultipartFile mf, String savePath) {
+	public void saveFile(MultipartFile mf, String savePath) throws FileException {
 		
 		// 사용자가 등록한 파일을 담을 파일 객체 생성
 		// savePath : 저장할 경로 + 변경된 파일명
 		File fileData = new File(savePath);
 		try {
+			// 에러 발생용 코드
+			int res = 10/0;
+			
 			// 임시 파일에 덮어씌우기
 			mf.transferTo(fileData);
-		} catch (IllegalStateException | IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			throw new FileException("F_ERROR_01");
 		}
 	}
 	
